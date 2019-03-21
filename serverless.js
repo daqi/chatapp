@@ -3,7 +3,7 @@
  */
 
 const { mergeDeepRight } = require('ramda')
-const { Component } = require('@serverless/component')
+const { Component } = require('@serverless/components')
 
 /*
  * Get Config
@@ -60,8 +60,8 @@ class RealtimeApp extends Component {
     }
     const config = getConfig(inputs)
 
-    const website = await this.load('Website')
-    const socket = await this.load('Socket')
+    const website = await this.load('@serverless/website')
+    const socket = await this.load('@serverless/socket')
 
     const socketOutputs = await socket(config.backend)
     config.frontend.env.urlWebsocketApi = socketOutputs.url // pass backend url to frontend
@@ -92,8 +92,8 @@ class RealtimeApp extends Component {
     // it doesn't even need any inputs at all since all is available in children state!
     this.cli.status('Removing')
 
-    const website = await this.load('Website')
-    const socket = await this.load('Socket')
+    const website = await this.load('@serverless/website')
+    const socket = await this.load('@serverless/socket')
 
     const outputs = await Promise.all([website.remove(), socket.remove()])
 
@@ -112,7 +112,7 @@ class RealtimeApp extends Component {
     // the second (componentAlias) argument is undefined because we
     // only have a single instance, so the default behavor of using
     // the child component class name as an alias is fine
-    const socket = await this.load('Socket', undefined, false)
+    const socket = await this.load('@serverless/socket', undefined, false)
     return socket.connect(inputs)
   }
 }
