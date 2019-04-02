@@ -5,10 +5,10 @@ Deploy a Realtime App in Seconds Using [Serverless Components](https://github.co
 &nbsp;
 
 - [Quick Start](#quick-start)
-  - [Install Serverless Components](#install-serverless-components)
-  - [Create App Directory](#create-app-directory)
-  - [Copy Template](#copy-this-template)
-  - [Deploy](#deploy)
+  - [Install Serverless Components](#1-install-serverless-components)
+  - [Create App Directory](#2-create-app-directory)
+  - [Copy Template](#3-copy-this-template)
+  - [Deploy](#4-deploy)
 
 
 &nbsp;
