@@ -1,3 +1,7 @@
+
+
+[![Serverless Components](https://s3.amazonaws.com/assets.github.serverless/readme-serverless-realtime-application-1.png)](http://serverless.com)
+
 &nbsp;
 
 Deploy a Realtime App in seconds using [Serverless Components](https://github.com/serverless/components). Just provide your frontend code (powered by the [webiste component](https://github.com/serverless-components/Website)), and your backend code (powered by the [socket component](https://github.com/serverless-components/Socket)).
@@ -93,7 +97,7 @@ RealtimeApp:
       buildCmd: null
 ```
 
-### 4.Deploy
+### 4. Deploy
 
 ```
 $ components
