@@ -52,6 +52,7 @@ For more info on working with the `socket.js` file, checkout the [Socket Compone
 ### 3. Copy This Template
 
 ```yml
+# serverless.yml
 
 name: my-realtime-app
 stage: dev
