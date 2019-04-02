@@ -4,6 +4,17 @@ Deploy a Realtime App in Seconds Using [Serverless Components](https://github.co
 
 &nbsp;
 
+- [Quick Start](#quick-start)
+  - [Install Serverless Components](#install-serverless-components)
+  - [Create App Directory](#create-app-directory)
+  - [Copy Template](#copy-this-template)
+  - [Deploy](#deploy)
+
+
+&nbsp;
+
+## Quick Start
+
 ### 1. Install Serverless Components
 
 ```
@@ -18,7 +29,7 @@ $ cd my-realtime-app
 $ touch serverless.yml
 ```
 
-the `my-realtime-app` directory should look something like this:
+the directory should look something like this:
 
 
 ```
@@ -30,7 +41,7 @@ the `my-realtime-app` directory should look something like this:
 
 ```
 
-### 2. Copy This Template
+### 3. Copy This Template
 
 ```yml
 
@@ -53,7 +64,7 @@ RealtimeApp:
       path: ./frontend
 ```
 
-### 2. Run Components
+### 4.Deploy
 
 ```
 $ components
