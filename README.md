@@ -23,7 +23,6 @@ $ npm install -g @serverless/components
 ```
 $ mkdir my-realtime-app
 $ cd my-realtime-app
-$ touch serverless.yml
 ```
 
 the directory should look something like this:
