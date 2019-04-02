@@ -61,7 +61,7 @@ RealtimeApp:
   inputs:
     name: my-realtime-app
     description: My Realtime App
-    regoin: us-east-1
+    region: us-east-1
 
     # backend config to be passed to the socket component
     backend:
