@@ -8,21 +8,21 @@ Deploy a Realtime App in seconds using [Serverless Components](https://github.co
 
 &nbsp;
 
-1. [Install Serverless Components](#1-install-serverless-components)
-2. [Create App Directory](#2-create-app-directory)
-3. [Copy Template](#3-copy-this-template)
+1. [Install](#1-install)
+2. [Create](#2-create)
+3. [Configure](#3-configure)
 4. [Deploy](#4-deploy)
 
 &nbsp;
 
 
-### 1. Install Serverless Components
+### 1. Install
 
 ```
 $ npm install -g @serverless/components
 ```
 
-### 2. Create App Directory 
+### 2. Create
 
 ```
 $ mkdir my-realtime-app
@@ -52,7 +52,7 @@ on('default', async (data, socket) => {
 
 For more info on working with the `socket.js` file, checkout the [Socket Component docs](https://github.com/serverless-components/socket).
 
-### 3. Copy This Template
+### 3. Configure
 
 ```yml
 # serverless.yml
@@ -102,6 +102,8 @@ RealtimeApp:
 ```
 $ components
 ```
+
+&nbsp;
 
 ### New to Components?
 
