@@ -18,6 +18,18 @@ $ cd my-realtime-app
 $ touch serverless.yml
 ```
 
+the `my-realtime-app` directory should look something like this:
+
+
+```
+|- backend
+  |- socket.js
+|- frontend
+  |- index.html
+|- serverless.yml
+
+```
+
 ### 2. Copy This Template
 
 ```yml
@@ -28,26 +40,17 @@ stage: dev
 RealtimeApp:
   component: @serverless/realtime-app
   inputs:
-    name: my-app
-    description: My Realtime App
-    regoin: us-east-1
+    name: my-realtime-app
   
     # configure your backend
     backend:
       code: ./backend
-      memory: 512
-      timeout: 10
       env:
         TABLE_NAME: users
         
     # configure your frontend
     frontend:
       path: ./frontend
-      assets: ./frontend
-      envFile: ./frontend/src/env.js
-      env:
-        API_URL: https://api.com
-      buildCmd: null
 ```
 
 ### 2. Run Components
