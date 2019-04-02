@@ -4,19 +4,13 @@ Deploy a Realtime App in Seconds Using [Serverless Components](https://github.co
 
 &nbsp;
 
-- [Quick Start](#quick-start)
-  - [Install Serverless Components](#1-install-serverless-components)
-  - [Create App Directory](#2-create-app-directory)
-  - [Copy Template](#3-copy-this-template)
-  - [Deploy](#4-deploy)
-- [Inputs](#inputs)
-  - [Backend](#backend)
-  - [Frontend](#frontend)
-
+- [1. Install Serverless Components](#1-install-serverless-components)
+- [2. Create App Directory](#2-create-app-directory)
+- [3. Copy Template](#3-copy-this-template)
+- [4. Deploy](#4-deploy)
 
 &nbsp;
 
-## Quick Start
 
 ### 1. Install Serverless Components
 
@@ -44,6 +38,17 @@ the directory should look something like this:
 
 ```
 
+the `socket.js` file should minimally look something like this:
+
+```js
+on('default', async (data, socket) => {
+  socket.send(data)
+})
+
+```
+
+For more info on working with the `socket.js` file, checkout the [Socket Component docs](https://github.com/serverless-components/socket).
+
 ### 3. Copy This Template
 
 ```yml
@@ -55,16 +60,37 @@ RealtimeApp:
   component: @serverless/realtime-app
   inputs:
     name: my-realtime-app
-  
-    # configure your backend
+    description: My Realtime App
+    regoin: us-east-1
+
+    # backend config to be passed to the socket component
     backend:
+      # path to the backend code that contains the socket.js file
       code: ./backend
+
+      memory: 512
+      timeout: 10
       env:
         TABLE_NAME: users
-        
-    # configure your frontend
+
+    # frontend config to be passed to the website component
     frontend:
+
+      # path to the frontend directory the contains the index.html file
       path: ./frontend
+
+      # if you're using React, this is the the path to the dist directory
+      assets: ./frontend
+
+      # you can provide a frontend env file path to be generated for use by your frontend code
+      envFile: ./frontend/src/env.js
+
+      # the contents of this env file
+      env:
+        API_URL: https://api.com
+
+      # if you're using React, you can provide the build command that would build code from the path dir to the assets dir
+      buildCmd: null
 ```
 
 ### 4.Deploy
