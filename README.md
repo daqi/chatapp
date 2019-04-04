@@ -18,13 +18,13 @@ Deploy a Realtime App in seconds using [Serverless Components](https://github.co
 
 ### 1. Install
 
-```
+```console
 $ npm install -g @serverless/components
 ```
 
 ### 2. Create
 
-```
+```console
 $ mkdir my-realtime-app
 $ cd my-realtime-app
 ```
@@ -99,7 +99,7 @@ RealtimeApp:
 
 ### 4. Deploy
 
-```
+```console
 $ components
 ```
 
