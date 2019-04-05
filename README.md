@@ -61,7 +61,7 @@ name: my-realtime-app
 stage: dev
 
 RealtimeApp:
-  component: @serverless/realtime-app
+  component: "@serverless/realtime-app"
   inputs:
     name: my-realtime-app
     description: My Realtime App
