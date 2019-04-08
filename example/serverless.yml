@@ -1,0 +1,30 @@
+name: my-chat-app
+stage: dev
+
+myChatApp:
+  component: "@serverless/realtime-app"
+  inputs:
+    name: my-chat-app
+    description: My Chat App
+    region: us-east-1
+
+    # backend config to be passed to the socket component
+    backend:
+      code: ./backend
+      memory: 512
+      timeout: 10
+      env:
+        dbConnectionsName: ${comp:connectionsTable.name}
+
+    # frontend config to be passed to the website component
+    frontend:
+      code: ./frontend
+      build:
+        dir: ./build
+        command: npm run build
+        envFile: ./src/env.js
+
+connectionsTable:
+  component: "@serverless/aws-dynamodb"
+  inputs:
+    name: ${name}-connections
