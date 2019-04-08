@@ -79,28 +79,49 @@ RealtimeApp:
 
     # frontend config to be passed to the website component
     frontend:
-
-      # path to the frontend directory the contains the index.html file
-      path: ./frontend
-
-      # if you're using React, this is the the path to the dist directory
-      assets: ./frontend
-
-      # you can provide a frontend env file path to be generated for use by your frontend code
-      envFile: ./frontend/src/env.js
-
-      # the contents of this env file
-      env:
-        API_URL: https://api.com
-
-      # if you're using React, you can provide the build command that would build code from the path dir to the assets dir
-      buildCmd: null
+        # path to the directory that contains your frontend code
+        # if you're using a framework like React, that would be the root of your frontend project, otherwise it'd be where index.html lives.
+        # default is './frontend'
+        code: ./static
+        
+        # if your website needs to be built (e.g. using React)...
+        # default is "undefined"
+        build:
+        
+          # the path to the build directory. default is ./build
+          dir: ./dist
+          
+          # the build command
+          command: npm run build # this is the default anyway!
+          
+          # you can provide an env file path (relative to the code path above) to be generated for use by your frontend code. By default it's './src/env.js'
+          envFile: ./frontend/src/env.js
+          
+          # the contents of this env file
+          # the backend api url will be injected by default
+          # under the "urlWebsocketApi" key
+          env:
+            SOME_API_URL: https://api.com
 ```
 
 ### 4. Deploy
 
 ```console
-$ components
+RealtimeApp (master)$ ️components
+
+  RealtimeApp › outputs:
+  frontend: 
+    url:  'http://realtimeapp-lwmb8jd.s3-website-us-east-1.amazonaws.com'
+    env:  undefined
+  backend: 
+    url:  'wss://rzrqzb6z4h.execute-api.us-east-1.amazonaws.com/dev/'
+    env:  []
+
+
+  14s › dev › RealtimeApp › done
+
+RealtimeApp (master)$
+
 ```
 
 &nbsp;
