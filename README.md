@@ -51,6 +51,8 @@ on('default', async (data, socket) => {
 
 For more info on working with the `socket.js` file, check out the [socket component docs](https://github.com/serverless-components/socket).
 
+To see a full example of an application built with this, [check out this Chat Application](https://github.com/serverless/components/tree/master/templates/realtime-app).
+
 ### 3. Configure
 
 ```yml
