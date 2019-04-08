@@ -49,7 +49,7 @@ on('default', async (data, socket) => {
 
 ```
 
-For more info on working with the `socket.js` file, checkout the [Socket Component docs](https://github.com/serverless-components/socket).
+For more info on working with the `socket.js` file, check out the [socket component docs](https://github.com/serverless-components/socket).
 
 ### 3. Configure
 
