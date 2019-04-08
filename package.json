@@ -1,6 +1,6 @@
 {
   "name": "@serverless/realtime-app",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "main": "./serverless.js",
   "publishConfig": {
     "access": "public"
@@ -13,8 +13,8 @@
   "license": "MIT",
   "dependencies": {
     "@serverless/components": "^0.1.0",
-    "@serverless/socket": "^0.1.6",
-    "@serverless/website": "^0.1.3"
+    "@serverless/socket": "^0.1.0",
+    "@serverless/website": "^0.1.0"
   },
   "devDependencies": {
     "babel-eslint": "9.0.0",
