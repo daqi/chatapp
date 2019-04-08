@@ -25,8 +25,7 @@ $ npm install -g @serverless/components
 ### 2. Create
 
 ```console
-$ mkdir my-realtime-app
-$ cd my-realtime-app
+$ mkdir my-realtime-app && cd my-realtime-app
 ```
 
 the directory should look something like this:
