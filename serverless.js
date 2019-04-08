@@ -2,7 +2,6 @@
  * Component – RealtimeApp
  */
 
-const { mergeDeepRight } = require('ramda')
 const { Component } = require('@serverless/components')
 
 /*
@@ -11,32 +10,35 @@ const { Component } = require('@serverless/components')
  */
 
 const getConfig = (inputs) => {
-  const defaults = {
-    name: 'realtimeApp',
-    description: 'Realtime App',
-    region: 'us-east-1',
+  const config = {
+    name: inputs.name || 'realtimeApp',
+    description: inputs.description || 'Realtime App',
+    region: inputs.region || 'us-east-1',
     frontend: {
-      path: './frontend',
-      assets: './frontend',
-      envFile: './frontend/src/env.js',
-      env: {},
-      buildCmd: null,
-      localCmd: null
+      code:
+        typeof inputs.frontend === 'object' && inputs.frontend.code
+          ? inputs.frontend.code
+          : './frontend',
+      build:
+        typeof inputs.frontend === 'object' && inputs.frontend.build
+          ? inputs.frontend.build
+          : undefined
     },
     backend: {
-      code: './backend',
+      code:
+        typeof inputs.backend === 'object' && inputs.backend.code
+          ? inputs.backend.code
+          : './backend',
       memory: 512,
       timeout: 10,
       env: {}
     }
   }
 
-  const config = mergeDeepRight(defaults, inputs)
-
-  config.backend.name = `${config.name}`
+  config.backend.name = config.name
   config.backend.description = config.description
   config.backend.region = config.region
-  config.frontend.name = `${config.name}`
+  config.frontend.name = config.name
   config.frontend.region = config.region
 
   return config
@@ -64,12 +66,19 @@ class RealtimeApp extends Component {
     const socket = await this.load('@serverless/socket')
 
     const socketOutputs = await socket(config.backend)
-    config.frontend.env.urlWebsocketApi = socketOutputs.url // pass backend url to frontend
+
+    if (typeof config.frontend.build === 'object') {
+      config.frontend.build.env = {
+        urlWebsocketApi: socketOutputs.url, // pass backend url to frontend
+        ...(config.frontend.build.env || {})
+      }
+    }
+
     const websiteOutputs = await website(config.frontend)
 
     // this high level component doesn't need to save any state!
 
-    let outputs = {
+    const outputs = {
       frontend: {
         url: websiteOutputs.url,
         env: websiteOutputs.env
@@ -95,25 +104,9 @@ class RealtimeApp extends Component {
     const website = await this.load('@serverless/website')
     const socket = await this.load('@serverless/socket')
 
-    const outputs = await Promise.all([website.remove(), socket.remove()])
+    await Promise.all([website.remove(), socket.remove()])
 
     return {}
-  }
-
-  /*
-   * Connect
-   */
-
-  async connect(inputs = {}) {
-    // in this particular case, we want to load the Socket component
-    // AND turn on its cli, which is turned off by default since it's a child
-    // that's why the last argument is false
-    //
-    // the second (componentAlias) argument is undefined because we
-    // only have a single instance, so the default behavor of using
-    // the child component class name as an alias is fine
-    const socket = await this.load('@serverless/socket', undefined, false)
-    return socket.connect(inputs)
   }
 }
 
