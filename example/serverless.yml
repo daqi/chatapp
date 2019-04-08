@@ -28,3 +28,12 @@ connectionsTable:
   component: "@serverless/aws-dynamodb"
   inputs:
     name: ${name}-connections
+    attributeDefinitions:
+      - AttributeName: 'connectionId'
+        AttributeType: 'S'
+    keySchema:
+      - AttributeName: 'connectionId'
+        KeyType: 'HASH'
+    provisionedThroughput:
+      ReadCapacityUnits: 1
+      WriteCapacityUnits: 1
