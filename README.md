@@ -6,7 +6,7 @@
 
 Deploy a Full-Stack Realtime App in seconds using [Serverless Components](https://github.com/serverless/components). Just provide your frontend code (powered by the [website component](https://github.com/serverless-components/Website)), and your backend code (powered by the [socket component](https://github.com/serverless-components/Socket)).
 
-Some great use-cases for this project are: Chat Apps, Bots, Notification systems, Charting Dashboards, Stock Tickers and more.  As always, consider a serverless stack like this if you are looking to deliver software or features with extremely low overhead.
+Great use-cases for this project are: **Chat Apps**, **Bots**, **Notification Systems**, **Charting Dashboards**, **Stock Tickers** & more.  As always, consider a serverless stack like this if you are looking to deliver software or features with extremely low overhead.
 
 &nbsp;
 
