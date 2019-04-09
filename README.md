@@ -131,7 +131,7 @@ RealtimeApp (master)$
 
 ### 5. Example
 
-You can see [a full Chat Application that uses this Component in the examples folder](https://github.com/serverless-components/RealtimeApp/tree/master/example).  It leverages AWS DynamoDB to maintain state of who is connected, so that messages can be sent out to the appropriate connection IDs.
+You can see [a full Chat Application that uses this Component in the example folder](https://github.com/serverless-components/RealtimeApp/tree/master/example).  It leverages AWS DynamoDB to maintain state of who is connected, so that messages can be sent out to the appropriate connection IDs.
 
 You can also see how this Component can be used programmatically in the [ChatApp Component's source code](https://github.com/serverless-components/ChatApp/blob/master/serverless.js).
 
