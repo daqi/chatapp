@@ -41,7 +41,16 @@ the directory should look something like this:
 |- frontend
   |- index.html
 |- serverless.yml
+|- .env      # your development AWS api keys
+|- .env.prod # your production AWS api keys
 
+```
+
+the `.env` files should look something like this.
+
+```
+AWS_ACCESS_KEY_ID=XXX
+AWS_SECRET_ACCESS_KEY=XXX
 ```
 
 the `socket.js` file should minimally look something like this:
