@@ -46,7 +46,7 @@ the directory should look something like this:
 
 ```
 
-the `.env` files should look something like this.
+the `.env` files are not required if you have the aws keys set globally and you want to use a single stage, but they should look like this.
 
 ```
 AWS_ACCESS_KEY_ID=XXX
