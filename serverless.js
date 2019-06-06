@@ -54,7 +54,7 @@ class RealtimeApp extends Component {
    */
 
   async default(inputs = {}) {
-    this.cli.status('Deploying')
+    this.ui.status('Deploying')
     inputs = inputs || {}
     // Get config from inputs and defaults
     if (!inputs.name) {
@@ -88,7 +88,11 @@ class RealtimeApp extends Component {
         env: socketOutputs.code.env
       }
     }
-    this.cli.outputs(outputs)
+
+    this.ui.log()
+    this.ui.output('frontend url', `${outputs.frontend.url}`)
+    this.ui.output('backend url', ` ${outputs.backend.url}`)
+
     return outputs
   }
 
@@ -99,7 +103,7 @@ class RealtimeApp extends Component {
   async remove() {
     // this remove function just calls remove on the child components
     // it doesn't even need any inputs at all since all is available in children state!
-    this.cli.status('Removing')
+    this.ui.status('Removing')
 
     const website = await this.load('@serverless/website')
     const socket = await this.load('@serverless/socket')
