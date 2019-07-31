@@ -1,6 +1,6 @@
 {
   "name": "@serverless/realtime-app",
-  "version": "0.2.0",
+  "version": "1.0.5",
   "main": "./serverless.js",
   "publishConfig": {
     "access": "public"
@@ -12,9 +12,9 @@
   "author": "Serverless, Inc.",
   "license": "Apache",
   "dependencies": {
-    "@serverless/components": "^0.2.0",
-    "@serverless/socket": "^0.2.0",
-    "@serverless/website": "^0.2.0"
+    "@serverless/core": "^1.0.0",
+    "@serverless/backend-socket": "^3.0.0",
+    "@serverless/website": "^3.0.0"
   },
   "devDependencies": {
     "babel-eslint": "9.0.0",

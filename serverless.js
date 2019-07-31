@@ -2,7 +2,7 @@
  * Component – RealtimeApp
  */
 
-const { Component } = require('@serverless/components')
+const { Component } = require('@serverless/core')
 
 /*
  * Get Config
@@ -11,34 +11,12 @@ const { Component } = require('@serverless/components')
 
 const getConfig = (inputs) => {
   const config = {
-    name: inputs.name || 'realtimeApp',
-    description: inputs.description || 'Realtime App',
     region: inputs.region || 'us-east-1',
-    frontend: {
-      code:
-        typeof inputs.frontend === 'object' && inputs.frontend.code
-          ? inputs.frontend.code
-          : './frontend',
-      build:
-        typeof inputs.frontend === 'object' && inputs.frontend.build
-          ? inputs.frontend.build
-          : undefined
-    },
-    backend: {
-      code:
-        typeof inputs.backend === 'object' && inputs.backend.code
-          ? inputs.backend.code
-          : './backend',
-      memory: 512,
-      timeout: 10,
-      env: {}
-    }
+    frontend: inputs.frontend,
+    backend: inputs.backend
   }
 
-  config.backend.name = config.name
-  config.backend.description = config.description
   config.backend.region = config.region
-  config.frontend.name = config.name
   config.frontend.region = config.region
 
   return config
@@ -54,7 +32,7 @@ class RealtimeApp extends Component {
    */
 
   async default(inputs = {}) {
-    this.ui.status('Deploying')
+    this.context.status('Deploying')
     inputs = inputs || {}
     // Get config from inputs and defaults
     if (!inputs.name) {
@@ -63,15 +41,13 @@ class RealtimeApp extends Component {
     const config = getConfig(inputs)
 
     const website = await this.load('@serverless/website')
-    const socket = await this.load('@serverless/socket')
+    const socket = await this.load('@serverless/backend-socket')
 
     const socketOutputs = await socket(config.backend)
 
-    if (typeof config.frontend.build === 'object') {
-      config.frontend.build.env = {
-        urlWebsocketApi: socketOutputs.url, // pass backend url to frontend
-        ...(config.frontend.build.env || {})
-      }
+    config.frontend.env = {
+      urlWebsocketApi: socketOutputs.url, // pass backend url to frontend
+      ...(config.frontend.env || {})
     }
 
     const websiteOutputs = await website(config.frontend)
@@ -85,13 +61,9 @@ class RealtimeApp extends Component {
       },
       backend: {
         url: socketOutputs.url,
-        env: socketOutputs.code.env
+        env: socketOutputs.env
       }
     }
-
-    this.ui.log()
-    this.ui.output('frontend url', `${outputs.frontend.url}`)
-    this.ui.output('backend url', ` ${outputs.backend.url}`)
 
     return outputs
   }
@@ -103,10 +75,10 @@ class RealtimeApp extends Component {
   async remove() {
     // this remove function just calls remove on the child components
     // it doesn't even need any inputs at all since all is available in children state!
-    this.ui.status('Removing')
+    this.context.status('Removing')
 
     const website = await this.load('@serverless/website')
-    const socket = await this.load('@serverless/socket')
+    const socket = await this.load('@serverless/backend-socket')
 
     await Promise.all([website.remove(), socket.remove()])
 
