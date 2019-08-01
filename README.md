@@ -23,7 +23,7 @@ Great use-cases for this project are: **Chat Apps**, **Bots**, **Notification Sy
 ### 1. Install
 
 ```console
-$ npm install -g @serverless/components
+$ npm install -g serverless
 ```
 
 ### 2. Create
@@ -41,14 +41,12 @@ the directory should look something like this:
 |- frontend
   |- index.html
 |- serverless.yml
-|- .env      # your development AWS api keys
-|- .env.prod # your production AWS api keys
+|- .env      # your AWS api keys
 
 ```
 
-the `.env` files are not required if you have the aws keys set globally and you want to use a single stage, but they should look like this.
-
 ```
+# .env
 AWS_ACCESS_KEY_ID=XXX
 AWS_SECRET_ACCESS_KEY=XXX
 ```
@@ -71,70 +69,35 @@ To see a full example of an application built with this, [check out this Chat Ap
 ```yml
 # serverless.yml
 
-name: my-realtime-app
-stage: dev
-
 RealtimeApp:
   component: "@serverless/realtime-app"
   inputs:
-    name: my-realtime-app
-    description: My Realtime App
-    region: us-east-1
-
     # backend config to be passed to the socket component
     backend:
-      # path to the backend code that contains the socket.js file
-      code: ./backend
-
-      memory: 512
+      code:
+        root: ./code # The root folder containing the backend code.
+        src: dist # The folder within your 'src' directory containing your built artifacts
+        hook: npm run build # A hook to build/test/do anything
+      memory: 128
       timeout: 10
       env:
-        TABLE_NAME: users
+        TABLE_NAME: my-table
 
     # frontend config to be passed to the website component
     frontend:
-        # path to the directory that contains your frontend code
-        # if you're using a framework like React, that would be the root of your frontend project, otherwise it'd be where index.html lives.
-        # default is './frontend'
-        code: ./static
-        
-        # if your website needs to be built (e.g. using React)...
-        # default is "undefined"
-        build:
-        
-          # the path to the build directory. default is ./build
-          dir: ./dist
-          
-          # the build command
-          command: npm run build # this is the default anyway!
-          
-          # you can provide an env file path (relative to the code path above) to be generated for use by your frontend code. By default it's './src/env.js'
-          envFile: ./frontend/src/env.js
-          
-          # the contents of this env file
-          # the backend api url will be injected by default
-          # under the "urlWebsocketApi" key
-          env:
-            SOME_API_URL: https://api.com
+      code:
+        root: ./ # The root folder of your website project.  Defaults to current working directory
+        src: ./src # The folder to be uploaded containing your built artifact
+        hook: npm run build # A hook to build/test/do anything to your code before uploading
+      env: # Environment variables to include in a 'env.js' file with your uploaded code.
+        API_URL: https://api.com
+    region: us-east-1
 ```
 
 ### 4. Deploy
 
 ```console
-realtime-app (master)$ ️components
-
-  RealtimeApp › outputs:
-  frontend: 
-    url:  'http://realtimeapp-lwmb8jd.s3-website-us-east-1.amazonaws.com'
-    env:  undefined
-  backend: 
-    url:  'wss://rzrqzb6z4h.execute-api.us-east-1.amazonaws.com/dev/'
-    env:  []
-
-
-  14s › dev › RealtimeApp › done
-
-realtime-app (master)$
+$ serverless
 
 ```
 
