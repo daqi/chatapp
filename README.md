@@ -13,7 +13,7 @@ Great use-cases for this project are: **Chat Apps**, **Bots**, **Notification Sy
 3. [Configure](#3-configure)
 4. [Deploy](#4-deploy)
 5. [Remove](#5-remove)
-6. [Pricing](#6-example)
+6. [Example](#6-example)
 
 &nbsp;
 
