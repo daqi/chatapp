@@ -1,6 +1,6 @@
 /*
-* Chat App
-*/
+ * Chat App
+ */
 
 import React, { Component } from 'react'
 import moment from 'moment'
@@ -8,14 +8,13 @@ import logo from './images/logo.png'
 import './ChatApp.css'
 
 /*
-* Class – ChatApp
-*/
+ * Class – ChatApp
+ */
 
 class ChatApp extends Component {
-
   /*
-  * Constructor
-  */
+   * Constructor
+   */
 
   constructor(props) {
     super(props)
@@ -24,8 +23,12 @@ class ChatApp extends Component {
     this.messages = []
 
     this.state = {
-      username: 'user-' + Math.random().toString(36).substring(8),
-      messages: [],
+      username:
+        'user-' +
+        Math.random()
+          .toString(36)
+          .substring(8),
+      messages: []
     }
 
     // Bind functions
@@ -34,8 +37,8 @@ class ChatApp extends Component {
   }
 
   /*
-  * Component Did Mount
-  */
+   * Component Did Mount
+   */
 
   componentDidMount() {
     const self = this
@@ -44,28 +47,51 @@ class ChatApp extends Component {
     this.wsClient = new WebSocket(window.env.urlWebsocketApi)
 
     // On Connection Established...
-    this.wsClient.addEventListener('open', function (event) {})
+    this.wsClient.addEventListener('open', function(event) {
+      self.websocketPing()
+    })
 
     // On Event Received...
-    this.wsClient.addEventListener('message', function (event) {
-      const message = JSON.parse(event.data)
-      message.timeCreated = moment.unix(message.timeCreated).format('dddd, MMMM Do YYYY @ h:mm:ss a').toLowerCase()
-      self.messages.push(message)
-      return self.setState({ messages: self.messages }, self.scrollToBottom)
+    this.wsClient.addEventListener('message', function(event) {
+      const { data } = JSON.parse(event.data)
+      if (data !== 'ping') {
+        const jsonObj = {}
+        data.split(';').forEach((item) => {
+          const temp = item.split(':')
+          jsonObj[temp[0]] = decodeURIComponent(temp[1])
+        })
+        jsonObj.timeCreated = moment
+          .unix(jsonObj.timeCreated)
+          .format('dddd, MMMM Do YYYY @ h:mm:ss a')
+          .toLowerCase()
+        self.messages.push(jsonObj)
+        return self.setState({ messages: self.messages }, self.scrollToBottom)
+      }
     })
   }
 
-  /*
-  * Scroll To Bottom
-  */
-
-  scrollToBottom() {
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" })
+  /**
+   * start ping=-pong
+   */
+  websocketPing() {
+    this.timer = setInterval(() => {
+      if (this.wsClient) {
+        this.wsClient.send('ping')
+      }
+    }, 20000)
   }
 
   /*
-  * Change Username
-  */
+   * Scroll To Bottom
+   */
+
+  scrollToBottom() {
+    this.messagesEnd.scrollIntoView({ behavior: 'smooth' })
+  }
+
+  /*
+   * Change Username
+   */
 
   changeUsername(evt) {
     return this.setState({
@@ -74,8 +100,8 @@ class ChatApp extends Component {
   }
 
   /*
-  * Post Message
-  */
+   * Post Message
+   */
 
   postMessage(evt) {
     evt.preventDefault()
@@ -84,115 +110,101 @@ class ChatApp extends Component {
     if (!this.inputMessage.value || this.inputMessage.value === '') return
 
     // Post message
-    let data = {
-      username: this.state.username,
-      message: this.inputMessage.value,
-      timeCreated: moment().unix(),
-    }
-    this.wsClient.send(JSON.stringify(data))
+    this.wsClient.send(
+      `username:${this.state.username};message:${encodeURIComponent(
+        this.inputMessage.value
+      )};timeCreated:${moment().unix()}`
+    )
 
     // Clear message input
     this.inputMessage.value = ''
   }
 
   /*
-  * Render
-  */
+   * Render
+   */
 
   render() {
-
     return (
       <div className="ChatApp">
-
-        {
-          /*
-           * Navigation
-          */
-        }
+        {/*
+         * Navigation
+         */}
 
         <nav
-        className="ChatApp-navigation"
-        style={{
-          backgroundColor: window.env.colorBackground,
-          color: window.env.colorInputText
-        }}>
-
+          className="ChatApp-navigation"
+          style={{
+            backgroundColor: window.env.colorBackground,
+            color: window.env.colorInputText
+          }}
+        >
           <div className="ChatApp-navigation-column-left">
             <img src={window.env.logoUrl || logo} className="ChatApp-logo" alt="logo" />
           </div>
 
           <div className="ChatApp-navigation-column-right">
             <input
-            type='text'
-            className='ChatApp-input-username'
-            placeholder='enter a username...'
-            value={this.state.username}
-            onChange={this.changeUsername}
-            ref={el => this.inputUsername = el}
-            style={{
-              color: window.env.colorInputText
-            }}/>
+              type="text"
+              className="ChatApp-input-username"
+              placeholder="enter a username..."
+              value={this.state.username}
+              onChange={this.changeUsername}
+              ref={(el) => (this.inputUsername = el)}
+              style={{
+                color: window.env.colorInputText
+              }}
+            />
           </div>
         </nav>
 
-        {
-          /*
-           * Messages Container
-          */
-        }
+        {/*
+         * Messages Container
+         */}
 
-        <section
-          className="ChatApp-messages-wrapper"
-          ref={el => this.messagesWrapper = el}>
+        <section className="ChatApp-messages-wrapper" ref={(el) => (this.messagesWrapper = el)}>
           <div className="ChatApp-messages">
-
             {this.state.messages.map((message, key) => (
-              <div
-              className="ChatApp-message-wrapper"
-              key={key}>
-
+              <div className="ChatApp-message-wrapper" key={key}>
                 <div className="ChatApp-message-meta">
                   <div className="ChatApp-message-meta-username">{message.username}</div>
                   <div className="ChatApp-message-meta-time">{message.timeCreated}</div>
                 </div>
 
-                <div className="ChatApp-message-content">
-                  {message.message}
-                </div>
+                <div className="ChatApp-message-content">{message.message}</div>
               </div>
             ))}
 
-            <div style={{ float:"left", clear: "both" }}
-              ref={(el) => { this.messagesEnd = el }}>
-            </div>
+            <div
+              style={{ float: 'left', clear: 'both' }}
+              ref={(el) => {
+                this.messagesEnd = el
+              }}
+            ></div>
           </div>
         </section>
 
-        {
-          /*
-           * Message Input Field
-          */
-        }
+        {/*
+         * Message Input Field
+         */}
 
         <section
-        className="ChatApp-input"
-        style={{
-          backgroundColor: window.env.colorBackground,
-          color: window.env.colorInputText
-        }}>
-          <form
-          className="ChatApp-input-form"
-          onSubmit={this.postMessage}>
-
+          className="ChatApp-input"
+          style={{
+            backgroundColor: window.env.colorBackground,
+            color: window.env.colorInputText
+          }}
+        >
+          <form className="ChatApp-input-form" onSubmit={this.postMessage}>
             <input
-            type='text'
-            style={{
-              backgroundColor: window.env.colorBackground,
-              color: window.env.colorInputText
-            }}
-            className='ChatApp-input-text'
-            placeholder='enter a message...'
-            ref={el => this.inputMessage = el}/>
+              type="text"
+              style={{
+                backgroundColor: window.env.colorBackground,
+                color: window.env.colorInputText
+              }}
+              className="ChatApp-input-text"
+              placeholder="enter a message..."
+              ref={(el) => (this.inputMessage = el)}
+            />
           </form>
         </section>
       </div>

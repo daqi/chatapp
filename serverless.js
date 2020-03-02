@@ -11,7 +11,7 @@ const { Component } = require('@serverless/core')
 
 const getConfig = (inputs) => {
   const config = {
-    region: inputs.region || 'us-east-1',
+    region: inputs.region || 'ap-guangzhou',
     frontend: inputs.frontend,
     backend: inputs.backend
   }
@@ -40,8 +40,8 @@ class RealtimeApp extends Component {
     }
     const config = getConfig(inputs)
 
-    const website = await this.load('@serverless/website')
-    const socket = await this.load('@serverless/backend-socket')
+    const website = await this.load('@serverless/tencent-website')
+    const socket = await this.load('@serverless/tencent-websocket')
 
     const socketOutputs = await socket(config.backend)
 
@@ -60,8 +60,7 @@ class RealtimeApp extends Component {
         env: websiteOutputs.env
       },
       backend: {
-        url: socketOutputs.url,
-        env: socketOutputs.env
+        url: socketOutputs.url
       }
     }
 
@@ -77,8 +76,8 @@ class RealtimeApp extends Component {
     // it doesn't even need any inputs at all since all is available in children state!
     this.context.status('Removing')
 
-    const website = await this.load('@serverless/website')
-    const socket = await this.load('@serverless/backend-socket')
+    const website = await this.load('@serverless/tencent-website')
+    const socket = await this.load('@serverless/tencent-websocket')
 
     await Promise.all([website.remove(), socket.remove()])
 
