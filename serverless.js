@@ -1,13 +1,4 @@
-/*
- * Component – RealtimeApp
- */
-
 const { Component } = require('@serverless/core')
-
-/*
- * Get Config
- * - Merges configuration with defaults
- */
 
 const getConfig = (inputs) => {
   const config = {
@@ -22,15 +13,7 @@ const getConfig = (inputs) => {
   return config
 }
 
-/*
- * Class – RealtimeApp
- */
-
-class RealtimeApp extends Component {
-  /*
-   * Default
-   */
-
+class ChatApp extends Component {
   async default(inputs = {}) {
     this.context.status('Deploying')
     inputs = inputs || {}
@@ -43,16 +26,21 @@ class RealtimeApp extends Component {
     const website = await this.load('@serverless/tencent-website')
     const socket = await this.load('@serverless/tencent-websocket')
 
-    const socketOutputs = await socket(config.backend)
+    const socketOutputs = await socket({
+      ...config.backend,
+      fromClientRemark: 'serverless-chatapp'
+    })
 
     config.frontend.env = {
-      urlWebsocketApi: socketOutputs.url, // pass backend url to frontend
+      // pass backend url to frontend
+      urlWebsocketApi: socketOutputs.url,
       ...(config.frontend.env || {})
     }
 
-    const websiteOutputs = await website(config.frontend)
-
-    // this high level component doesn't need to save any state!
+    const websiteOutputs = await website({
+      ...config.frontend,
+      fromClientRemark: 'serverless-chatapp'
+    })
 
     const outputs = {
       frontend: {
@@ -67,13 +55,7 @@ class RealtimeApp extends Component {
     return outputs
   }
 
-  /*
-   * Remove
-   */
-
   async remove() {
-    // this remove function just calls remove on the child components
-    // it doesn't even need any inputs at all since all is available in children state!
     this.context.status('Removing')
 
     const website = await this.load('@serverless/tencent-website')
@@ -85,4 +67,4 @@ class RealtimeApp extends Component {
   }
 }
 
-module.exports = RealtimeApp
+module.exports = ChatApp

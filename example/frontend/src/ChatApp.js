@@ -55,11 +55,7 @@ class ChatApp extends Component {
     this.wsClient.addEventListener('message', function(event) {
       const { data } = JSON.parse(event.data)
       if (data !== 'ping') {
-        const jsonObj = {}
-        data.split(';').forEach((item) => {
-          const temp = item.split(':')
-          jsonObj[temp[0]] = decodeURIComponent(temp[1])
-        })
+        const jsonObj = self.parseWsData(data)
         jsonObj.timeCreated = moment
           .unix(jsonObj.timeCreated)
           .format('dddd, MMMM Do YYYY @ h:mm:ss a')
@@ -78,7 +74,7 @@ class ChatApp extends Component {
       if (this.wsClient) {
         this.wsClient.send('ping')
       }
-    }, 20000)
+    }, 3000)
   }
 
   /*
@@ -99,6 +95,28 @@ class ChatApp extends Component {
     })
   }
 
+  parseWsData(str) {
+    const jsonObj = {}
+    str.split(';').forEach((item) => {
+      const temp = item.split(':')
+      jsonObj[temp[0]] = decodeURIComponent(temp[1])
+    })
+    return jsonObj
+  }
+
+  formatWsData(data) {
+    const arr = []
+    Object.keys(data).forEach((key) => {
+      const isObject = typeof data[key] === 'object'
+      if (isObject) {
+        arr.push(`${key}:${JSON.stringify(data[key])}`)
+      } else {
+        arr.push(`${key}:${encodeURIComponent(data[key])}`)
+      }
+    })
+    return arr.join(';')
+  }
+
   /*
    * Post Message
    */
@@ -110,11 +128,13 @@ class ChatApp extends Component {
     if (!this.inputMessage.value || this.inputMessage.value === '') return
 
     // Post message
-    this.wsClient.send(
-      `username:${this.state.username};message:${encodeURIComponent(
-        this.inputMessage.value
-      )};timeCreated:${moment().unix()}`
-    )
+    const data = {
+      username: this.state.username,
+      message: this.inputMessage.value,
+      timeCreated: moment().unix()
+    }
+    // can only send text type data
+    this.wsClient.send(this.formatWsData(data))
 
     // Clear message input
     this.inputMessage.value = ''

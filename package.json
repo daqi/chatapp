@@ -1,6 +1,6 @@
 {
   "name": "@yugasun/serverless-chatapp",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "main": "./serverless.js",
   "publishConfig": {
     "access": "public"
@@ -13,7 +13,7 @@
   "dependencies": {
     "@serverless/core": "^1.1.2",
     "@serverless/tencent-website": "^1.2.19",
-    "@serverless/tencent-websocket": "^0.2.1"
+    "@serverless/tencent-websocket": "^0.2.2"
   },
   "devDependencies": {
     "babel-eslint": "9.0.0",

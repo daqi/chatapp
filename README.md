@@ -1,6 +1,6 @@
 ## chatapp
 
-[Online Demo](https://lfe5nxq-4651j5b-1251556596.cos-website.ap-guangzhou.myqcloud.com)
+[Online Demo](https://lfe5nxq-qvopuqp-1300862921.cos-website.ap-guangzhou.myqcloud.com/)
 
 Deploy a Full-Stack Realtime App in seconds using [Serverless Components](https://github.com/serverless/components). Just provide your frontend code (powered by the [website component](https://github.com/serverless-components/tencent-website)), and your backend code (powered by the [socket component](https://github.com/serverless-components/tencent-websocket)).
 
@@ -51,6 +51,11 @@ TENCENT_SECRET_KEY=123
 # mongodb connect string
 MONGO_CONNECTION=mongodb://xxx:xxx@localhost:27017/chatapp?authSource=admin
 
+
+# global env
+REGION=ap-guangzhou
+VPC_ID=vpc-xxx
+SUBNET_ID=subnet-xxx
 ```
 
 the `backend/app.js` file should minimally look something like this:
