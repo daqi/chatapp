@@ -68,7 +68,7 @@ on('disconnect', async (data, socket) => {})
 
 For more info on working with the `socket.js` file, check out the [socket component docs](https://github.com/serverless-components/tencent-websocket).
 
-To see a full example of an application built with this, [check out this Chat Application](https://github.com/yugasun/chatappapp/tree/master/example).
+To see a full example of an application built with this, [check out this Chat Application](https://github.com/yugasun/chatapp/tree/master/example).
 
 ### 3. Configure
 
@@ -79,19 +79,19 @@ myChatApp:
   inputs:
     name: my-chat-app
     description: My Chat App
-    region: ap-guangzhou
+    region: ${env.REGION}
 
     # backend config to be passed to the socket component
     backend:
-      region: ap-guangzhou
+      region: ${env.REGION}
       functionName: chatapp
       code: ./backend
       functionConf:
         memorySize: 128
-        timeout: 10
+        timeout: 30
         vpcConfig:
-          vpcId: vpc-e0ty4dcx
-          subnetId: subnet-ngamaqre
+          vpcId: ${env.VPC_ID}
+          subnetId: ${env.SUBNET_ID}
         environment:
           variables:
             mongoConnectString: ${env.MONGO_CONNECTION}
@@ -102,6 +102,7 @@ myChatApp:
 
     # frontend config to be passed to the website component
     frontend:
+      protocol: https
       code:
         src: build
         root: frontend
